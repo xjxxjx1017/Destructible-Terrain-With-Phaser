@@ -1,0 +1,38 @@
+{
+  "name": "Destructable-Terrain-With-Phaser",
+  "version": "0.6.0",
+  "description": "Phaser",
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.config.js --port=8001 --open chrome"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xjxxjx1017/Destructable-Terrain-With-Phaser.git"
+  },
+  "keywords": [
+    "game",
+    "phaser",
+    "space",
+    "spaceship"
+  ],
+  "author": "Jackson Xie",
+  "license": "MIT",
+  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+  "bugs": {
+    "url": "https://github.com/xjxxjx1017/Destructable-Terrain-With-Phaser/issues"
+  },
+  "homepage": "https://github.com/xjxxjx1017/Destructable-Terrain-With-Phaser#readme",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "phaser": "^3.16.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.120",
+    "expose-loader": "^0.7.5",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.2.4",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules/
+build/
+spacewarrealism.sublime-workspace
+terminal.glue
+assets/ship.jpg
+assets/space.png
+tmp/
+dist/

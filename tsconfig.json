@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"sourceMap": true,
+	    "lib": [
+			"dom",
+			"es2015",
+			"es2016"
+	    ],
+    	"module": "es2015",
+		"target": "es5",
+		"typeRoots": [
+			"node_modules/@types",
+		],
+		"outDir": "dist"
+	},
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules"
+	],
+}
