@@ -1,4 +1,4 @@
-# Destructable Terrain With Phaser
+# Destructible Terrain With Phaser
 
 A work in progress.
 
