@@ -72,6 +72,21 @@ export class FkGameData {
         var newData = new GridData( false );
         qt.updateWithCircle( c, newData );
         this.drawQuadTree( qt );
+
+        var tr = new Phaser.Geom.Triangle( 100, 100, 400, 210, 455, 235 );
+        var newData = new GridData( false );
+        qt.updateWithTriangle( tr, newData );
+        this.drawQuadTree( qt );
+
+        var tr = new Phaser.Geom.Triangle( 120, 120, 410, 220, 465, 245 );
+        var newData = new GridData( true );
+        qt.updateWithTriangle( tr, newData );
+        this.drawQuadTree( qt );
+
+        var rect = new Phaser.Geom.Rectangle( 350, 220, 40, 40 );
+        var newData = new GridData( false );
+        qt.updateWithRectangle( rect, newData );
+        this.drawQuadTree( qt );
 	}
 
     private drawQuadTree( qt : FkQuadTree<GridData> ) {

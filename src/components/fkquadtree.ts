@@ -19,38 +19,71 @@ export class FkQuadTree<T>{
 		this.triggerDraw = _draw;
 	}
 
-	public updateWithCircle( _g : Phaser.Geom.Circle, _dataChangeOnContain : T ) {
-		// Check, if the circle contains the whole quad
-		// 		Delete all sub trees, apply data change
-		if ( Phaser.Geom.Circle.ContainsRect( _g, this.dataRect ) ) {
-			this.dataSubTree = null;
-			this.dataNode = _dataChangeOnContain;
+	public updateWithLine( _startX : number, _startY : number, 
+		_endX : number, _endY : number, width : number ) {
+		// call updateWithTriangle
+	}
+
+	public updateWithRectangle( _g : Phaser.Geom.Rectangle, _dataChangeOnContain : T ) {
+		if ( Phaser.Geom.Rectangle.ContainsRect( _g, this.dataRect ) ) {
+			this.foldSubTreesToParent( _dataChangeOnContain );
 			return;
 		}
-		// Check if overlap or circle within quad
-		//		If not limit, split
-		//		If limit, treated as contained
-		var isOverlapped = Phaser.Geom.Intersects.CircleToRectangle( _g, this.dataRect )
-			|| Phaser.Geom.Rectangle.Contains( this.dataRect, _g.x, _g.y );
-		if ( isOverlapped ) {
-			if ( this.resDepth > 0 ) {
-				if ( this.dataSubTree == null )
-					this.createAllSubTrees();
-				for( var i = 0; i < this.dataSubTree.length; i++ ) {
-					var t = this.dataSubTree[i];
-					t.updateWithCircle( _g, _dataChangeOnContain );
-				}
-				// At this point, all sub trees has been updated.
-				// Check whether all subtrees hold the same value
-				// If they do, they are redundant and can be represent by using only parent tree. 
-				// So fold them back to parent tree
-				this.clearRedendantSubTrees();
-			}
-			else {
-				this.dataSubTree = null;
-				this.dataNode = _dataChangeOnContain;
-			}
+		if ( Phaser.Geom.Intersects.RectangleToRectangle( this.dataRect, _g )
+			|| ( Phaser.Geom.Rectangle.ContainsRect( this.dataRect, _g ) ) ) {
+			this.updateSubtrees( _dataChangeOnContain, function( _tree : FkQuadTree<T>, _data : T ) {
+				_tree.updateWithRectangle( _g, _data );
+			})
 		}
+	}
+
+	public updateWithTriangle( _g : Phaser.Geom.Triangle, _dataChangeOnContain : T ) {
+		if ( Phaser.Geom.Triangle.Contains( _g, this.dataRect.x, this.dataRect.y )
+			&&  Phaser.Geom.Triangle.Contains( _g, this.dataRect.x + this.dataRect.width, this.dataRect.y )
+			&&  Phaser.Geom.Triangle.Contains( _g, this.dataRect.x, this.dataRect.y + this.dataRect.height )
+			&&  Phaser.Geom.Triangle.Contains( _g, this.dataRect.x + this.dataRect.width, this.dataRect.y + this.dataRect.height ) ) {
+			this.foldSubTreesToParent( _dataChangeOnContain );
+			return;
+		}
+		if ( Phaser.Geom.Intersects.RectangleToTriangle( this.dataRect, _g )
+			|| ( Phaser.Geom.Rectangle.Contains( this.dataRect, _g.x1, _g.y1 )
+			&& Phaser.Geom.Rectangle.Contains( this.dataRect, _g.x2, _g.y2 )
+			&& Phaser.Geom.Rectangle.Contains( this.dataRect, _g.x3, _g.y3 ) ) ) {
+			this.updateSubtrees( _dataChangeOnContain, function( _tree : FkQuadTree<T>, _data : T ) {
+				_tree.updateWithTriangle( _g, _data );
+			})
+		}
+	}
+
+	public updateWithCircle( _g : Phaser.Geom.Circle, _dataChangeOnContain : T ) {
+		if ( Phaser.Geom.Circle.ContainsRect( _g, this.dataRect ) ) {
+			this.foldSubTreesToParent( _dataChangeOnContain );
+			return;
+		}
+		if ( Phaser.Geom.Intersects.CircleToRectangle( _g, this.dataRect )
+			|| Phaser.Geom.Rectangle.Contains( this.dataRect, _g.x, _g.y ) ) {
+			this.updateSubtrees( _dataChangeOnContain, function( _tree : FkQuadTree<T>, _data : T ) {
+				_tree.updateWithCircle( _g, _data );
+			})
+		}
+	}
+
+	private updateSubtrees( _dataToUpdate : T, 
+		_callback : ( _tree : FkQuadTree<T>, _data : T ) => void ) {
+		if ( this.resDepth > 0 ) {
+			if ( this.dataSubTree == null )
+				this.createAllSubTrees();
+			for( var i = 0; i < this.dataSubTree.length; i++ ) {
+				var t = this.dataSubTree[i];
+				_callback( t, _dataToUpdate );
+			}
+			// At this point, all sub trees has been updated.
+			// Check whether all subtrees hold the same value
+			// If they do, they are redundant and can be represent by using only parent tree. 
+			// So fold them back to parent tree
+			this.clearRedendantSubTrees();
+		}
+		else this.foldSubTreesToParent( _dataToUpdate );
 	}
 
 	public draw() {
@@ -61,6 +94,11 @@ export class FkQuadTree<T>{
 			})
 		}
 		else self.triggerDraw( self.dataRect, self.dataNode );
+	}
+
+	private foldSubTreesToParent( _data : T ) {
+		this.dataSubTree = null;
+		this.dataNode = _data;
 	}
 
 	private createAllSubTrees() {
@@ -93,7 +131,6 @@ export class FkQuadTree<T>{
 				return;
 		}
 		// All sub trees don't contain any sub-sub trees and have the same node data.
-		this.dataSubTree = null;
-		this.dataNode = toCompare;
+		this.foldSubTreesToParent( toCompare );
 	}
 }
