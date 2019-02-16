@@ -33,13 +33,18 @@ export class FkQuadTree<T>{
 		var isOverlapped = Phaser.Geom.Intersects.CircleToRectangle( _g, this.dataRect )
 			|| Phaser.Geom.Rectangle.Contains( this.dataRect, _g.x, _g.y );
 		if ( isOverlapped ) {
-			if ( this.resDepth > 0 && !_.isEqual( this.dataNode, _dataChangeOnContain ) ) {
+			if ( this.resDepth > 0 ) {
 				if ( this.dataSubTree == null )
 					this.createAllSubTrees();
 				for( var i = 0; i < this.dataSubTree.length; i++ ) {
 					var t = this.dataSubTree[i];
 					t.updateWithCircle( _g, _dataChangeOnContain );
 				}
+				// At this point, all sub trees has been updated.
+				// Check whether all subtrees hold the same value
+				// If they do, they are redundant and can be represent by using only parent tree. 
+				// So fold them back to parent tree
+				this.clearRedendantSubTrees();
 			}
 			else {
 				this.dataSubTree = null;
@@ -76,4 +81,19 @@ export class FkQuadTree<T>{
 		}
 	}
 
+	private clearRedendantSubTrees() {
+		var toCompare : T = null;
+		for( var i = 0; i < this.dataSubTree.length; i++ ) {
+			var t = this.dataSubTree[i];
+			if ( t.dataSubTree != null )
+				return;
+			if ( toCompare == null )
+				toCompare = t.dataNode;
+			else if ( !_.isEqual( toCompare, t.dataNode ) )
+				return;
+		}
+		// All sub trees don't contain any sub-sub trees and have the same node data.
+		this.dataSubTree = null;
+		this.dataNode = toCompare;
+	}
 }

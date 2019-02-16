@@ -10,6 +10,7 @@ class GridData {
 }
 
 export class FkGameData {
+    private IS_DEBUG : boolean = false;
     private FRAME_COLOR : number = 0x00ff00;
     private FRAME_COLOR_HIDDEN : number = 0xff0000;
     private FRAME_WIDTH : number = 1;    
@@ -39,20 +40,35 @@ export class FkGameData {
 
         var qt = new FkQuadTree( 50, 50, w, h, 10, 
             ( _rect, _data ) => { self.drawGrid( _rect, _data ); }, 
-            new GridData( true ) );
+            new GridData( false ) );
         this.drawQuadTree( qt );
 
         var c = new Phaser.Geom.Circle( 150, 150, 40 );
-        var newData = new GridData( false );
+        var newData = new GridData( true );
         qt.updateWithCircle( c, newData );
         this.drawQuadTree( qt );
 
         var c = new Phaser.Geom.Circle( 150, 220, 60 );
-        var newData = new GridData( false );
+        var newData = new GridData( true );
         qt.updateWithCircle( c, newData );
         this.drawQuadTree( qt );
 
         var c = new Phaser.Geom.Circle( 350, 220, 140 );
+        var newData = new GridData( true );
+        qt.updateWithCircle( c, newData );
+        this.drawQuadTree( qt );
+
+        var c = new Phaser.Geom.Circle( 250, 180, 80 );
+        var newData = new GridData( false );
+        qt.updateWithCircle( c, newData );
+        this.drawQuadTree( qt );
+
+        var c = new Phaser.Geom.Circle( 220, 300, 40 );
+        var newData = new GridData( false );
+        qt.updateWithCircle( c, newData );
+        this.drawQuadTree( qt );
+
+        var c = new Phaser.Geom.Circle( 250, 300, 40 );
         var newData = new GridData( false );
         qt.updateWithCircle( c, newData );
         this.drawQuadTree( qt );
@@ -67,10 +83,11 @@ export class FkGameData {
 
     private drawGrid( _rect : Phaser.Geom.Rectangle, _data : GridData ) : void {
         if ( _data.dataIsVisible == false ) {
-            return; // Debug rendering
-            this.debugDrawCounter++;
-            this.layerGridEdge.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR_HIDDEN, 1);
-            this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
+            if ( this.IS_DEBUG ) {
+                this.debugDrawCounter++;
+                this.layerGridEdge.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR_HIDDEN, 1);
+                this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
+            }
         }
         else {
             this.debugDrawCounter++;
