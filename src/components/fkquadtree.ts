@@ -19,9 +19,25 @@ export class FkQuadTree<T>{
 		this.triggerDraw = _draw;
 	}
 
-	public updateWithLine( _startX : number, _startY : number, 
-		_endX : number, _endY : number, width : number ) {
-		// call updateWithTriangle
+	public updateWithLine( _x1 : number, _y1 : number, 
+		_x2 : number, _y2 : number, _w : number, _dataChangeOnContain : T ) {
+		var theta = Math.atan( ( _y2 - _y1 ) / ( _x2 - _x1 ) );
+		var p1 = new Phaser.Geom.Rectangle( 
+			_x1 - Math.sin(theta) * _w / 2, 
+			_y1 + Math.cos(theta) * _w / 2 );
+		var p2 = new Phaser.Geom.Rectangle( 
+			_x1 + Math.sin(theta) * _w / 2, 
+			_y1 - Math.cos(theta) * _w / 2 );
+		var p3 = new Phaser.Geom.Rectangle( 
+			_x2 + Math.sin(theta) * _w / 2, 
+			_y2 - Math.cos(theta) * _w / 2 );
+		var p4 = new Phaser.Geom.Rectangle( 
+			_x2 - Math.sin(theta) * _w / 2, 
+			_y2 + Math.cos(theta) * _w / 2 );
+		var tr1 = new Phaser.Geom.Triangle( p1.x, p1.y, p2.x, p2.y, p3.x, p3.y );
+		var tr2 = new Phaser.Geom.Triangle( p1.x, p1.y, p3.x, p3.y, p4.x, p4.y );
+		this.updateWithTriangle( tr1, _dataChangeOnContain );
+		this.updateWithTriangle( tr2, _dataChangeOnContain );
 	}
 
 	public updateWithRectangle( _g : Phaser.Geom.Rectangle, _dataChangeOnContain : T ) {

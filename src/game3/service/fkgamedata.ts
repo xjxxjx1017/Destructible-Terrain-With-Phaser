@@ -43,49 +43,37 @@ export class FkGameData {
             new GridData( false ) );
         this.drawQuadTree( qt );
 
-        var c = new Phaser.Geom.Circle( 150, 150, 40 );
-        var newData = new GridData( true );
-        qt.updateWithCircle( c, newData );
+        qt.updateWithCircle( new Phaser.Geom.Circle( 150, 150, 40 ), new GridData( true ) );
         this.drawQuadTree( qt );
 
-        var c = new Phaser.Geom.Circle( 150, 220, 60 );
-        var newData = new GridData( true );
-        qt.updateWithCircle( c, newData );
+        qt.updateWithCircle( new Phaser.Geom.Circle( 150, 220, 60 ), new GridData( true ) );
         this.drawQuadTree( qt );
 
-        var c = new Phaser.Geom.Circle( 350, 220, 140 );
-        var newData = new GridData( true );
-        qt.updateWithCircle( c, newData );
+        qt.updateWithCircle( new Phaser.Geom.Circle( 350, 220, 140 ), new GridData( true ) );
         this.drawQuadTree( qt );
 
-        var c = new Phaser.Geom.Circle( 250, 180, 80 );
-        var newData = new GridData( false );
-        qt.updateWithCircle( c, newData );
+        qt.updateWithCircle( new Phaser.Geom.Circle( 250, 180, 80 ), new GridData( false ) );
         this.drawQuadTree( qt );
 
-        var c = new Phaser.Geom.Circle( 220, 300, 40 );
-        var newData = new GridData( false );
-        qt.updateWithCircle( c, newData );
+        qt.updateWithCircle( new Phaser.Geom.Circle( 220, 300, 40 ), new GridData( false ) );
         this.drawQuadTree( qt );
 
-        var c = new Phaser.Geom.Circle( 250, 300, 40 );
-        var newData = new GridData( false );
-        qt.updateWithCircle( c, newData );
+        qt.updateWithCircle( new Phaser.Geom.Circle( 250, 300, 40 ), new GridData( false ) );
         this.drawQuadTree( qt );
 
-        var tr = new Phaser.Geom.Triangle( 100, 100, 400, 210, 455, 235 );
-        var newData = new GridData( false );
-        qt.updateWithTriangle( tr, newData );
+        qt.updateWithTriangle( new Phaser.Geom.Triangle( 100, 100, 400, 210, 455, 235 ), new GridData( false ) );
         this.drawQuadTree( qt );
 
-        var tr = new Phaser.Geom.Triangle( 120, 120, 410, 220, 465, 245 );
-        var newData = new GridData( true );
-        qt.updateWithTriangle( tr, newData );
+        qt.updateWithTriangle( new Phaser.Geom.Triangle( 120, 120, 410, 220, 465, 245 ), new GridData( true ) );
         this.drawQuadTree( qt );
 
-        var rect = new Phaser.Geom.Rectangle( 350, 220, 40, 40 );
-        var newData = new GridData( false );
-        qt.updateWithRectangle( rect, newData );
+        qt.updateWithRectangle( new Phaser.Geom.Rectangle( 350, 220, 40, 40 ), new GridData( false ) );
+        this.drawQuadTree( qt );
+
+        qt.updateWithLine( 400, 250, 100, 350, 10, new GridData(true) );
+        this.drawQuadTree( qt );
+
+        qt.updateWithLine( 100, 200, 400, 200, 10, new GridData(false) );
         this.drawQuadTree( qt );
 	}
 
