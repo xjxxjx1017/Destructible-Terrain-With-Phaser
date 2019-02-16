@@ -1,22 +1,9 @@
 import 'phaser';
 import {FkQuadTree} from '../../components/fkquadtree';
-
-class GridData {
-    public dataIsVisible : boolean = true;
-
-    constructor( _isVisible : boolean ) {
-        this.dataIsVisible = _isVisible;
-    }
-}
+import {FkDestructibleObject} from '../../components/fkdestructibleobject';
 
 export class FkGameData {
-    private IS_DEBUG : boolean = false;
-    private FRAME_COLOR : number = 0x00ff00;
-    private FRAME_COLOR_HIDDEN : number = 0xff0000;
-    private FRAME_WIDTH : number = 1;    
 	private dataGame : Phaser.Scene;
-    private layerGridEdge : Phaser.GameObjects.Graphics;
-    private debugDrawCounter : number = 0;
 
 	private static _inst:FkGameData = null;
 	public static inst():FkGameData {
@@ -28,74 +15,41 @@ export class FkGameData {
 	private constructor() {}
 
 	public Init( _game : Phaser.Scene ) : Phaser.Scene {
-        this.layerGridEdge = _game.add.graphics();
 		return this.dataGame = _game;
 	}
 
 	public Run() {
         var self = this;
+        var s = 5;
 
-        var w = 500, h = 300;
-        console.log( "Canvas size: " + w + "x" + h + ", pixels: " + w * h );
+        var ship1 = new FkDestructibleObject( this.dataGame, 5 * s, 5 * s, 50 * s, 30 * s );
+        ship1.damageByCircle( new Phaser.Geom.Circle( 15 * s, 15 * s, 4 * s ) );
+        ship1.damageByCircle( new Phaser.Geom.Circle( 15 * s, 22 * s, 6 * s ) );
+        ship1.generateByCircle( new Phaser.Geom.Circle( 35 * s, 22 * s, 14 * s ) );
+        ship1.damageByCircle( new Phaser.Geom.Circle( 25 * s, 18 * s, 8 * s ) );
+        ship1.damageByCircle( new Phaser.Geom.Circle( 22 * s, 30 * s, 4 * s ) );
+        ship1.damageByCircle( new Phaser.Geom.Circle( 25 * s, 30 * s, 4 * s ) );
+        ship1.drawDstObject();
 
-        var qt = new FkQuadTree( 50, 50, w, h, 10, 
-            ( _rect, _data ) => { self.drawGrid( _rect, _data ); }, 
-            new GridData( false ) );
-        this.drawQuadTree( qt );
+        var ship2 = new FkDestructibleObject( this.dataGame, 65 * s, 5 * s, 40 * s, 30 * s );
+        ship2.damageByCircle( new Phaser.Geom.Circle( 25 * s, 18 * s, 8 * s ) );
+        ship2.damageByTriangle( new Phaser.Geom.Triangle( 10 * s, 10 * s, 40 * s, 21 * s, 45 * s, 23 * s ) );
+        ship2.generateByTriangle( new Phaser.Geom.Triangle( 12 * s, 12 * s, 41 * s, 22 * s, 46 * s, 24 * s ) );
+        ship2.damageByRectangle( new Phaser.Geom.Rectangle( 35 * s, 22 * s, 4 * s, 4 * s ) );
+        ship2.generateByLine( 40 * s, 25 * s, 10 * s, 35 * s, 1 * s );
+        ship2.damageByLine( 10 * s, 20 * s, 40 * s, 20 * s, 1 * s );
+        ship2.drawDstObject();
 
-        qt.updateWithCircle( new Phaser.Geom.Circle( 150, 150, 40 ), new GridData( true ) );
-        this.drawQuadTree( qt );
+        var ship3 = new FkDestructibleObject( this.dataGame, 5 * s, 45 * s, 50 * s, 30 * s );
+        ship3.damageByCircle( new Phaser.Geom.Circle( 15 * s, 15 * s, 4 * s ) );
+        ship3.damageByCircle( new Phaser.Geom.Circle( 15 * s, 22 * s, 6 * s ) );
+        ship3.drawDstObject();
 
-        qt.updateWithCircle( new Phaser.Geom.Circle( 150, 220, 60 ), new GridData( true ) );
-        this.drawQuadTree( qt );
-
-        qt.updateWithCircle( new Phaser.Geom.Circle( 350, 220, 140 ), new GridData( true ) );
-        this.drawQuadTree( qt );
-
-        qt.updateWithCircle( new Phaser.Geom.Circle( 250, 180, 80 ), new GridData( false ) );
-        this.drawQuadTree( qt );
-
-        qt.updateWithCircle( new Phaser.Geom.Circle( 220, 300, 40 ), new GridData( false ) );
-        this.drawQuadTree( qt );
-
-        qt.updateWithCircle( new Phaser.Geom.Circle( 250, 300, 40 ), new GridData( false ) );
-        this.drawQuadTree( qt );
-
-        qt.updateWithTriangle( new Phaser.Geom.Triangle( 100, 100, 400, 210, 455, 235 ), new GridData( false ) );
-        this.drawQuadTree( qt );
-
-        qt.updateWithTriangle( new Phaser.Geom.Triangle( 120, 120, 410, 220, 465, 245 ), new GridData( true ) );
-        this.drawQuadTree( qt );
-
-        qt.updateWithRectangle( new Phaser.Geom.Rectangle( 350, 220, 40, 40 ), new GridData( false ) );
-        this.drawQuadTree( qt );
-
-        qt.updateWithLine( 400, 250, 100, 350, 10, new GridData(true) );
-        this.drawQuadTree( qt );
-
-        qt.updateWithLine( 100, 200, 400, 200, 10, new GridData(false) );
-        this.drawQuadTree( qt );
+        var ship4 = new FkDestructibleObject( this.dataGame, 65 * s, 45 * s, 40 * s, 40 * s );
+        ship4.damageByCircle( new Phaser.Geom.Circle( 15 * s, 15 * s, 4 * s ) );
+        ship4.damageByCircle( new Phaser.Geom.Circle( 15 * s, 22 * s, 6 * s ) );
+        ship4.damageByLine( 40 * s, 25 * s, 10 * s, 35 * s, 1 * s );
+        ship4.damageByLine( 10 * s, 20 * s, 40 * s, 20 * s, 1 * s );
+        ship4.drawDstObject();
 	}
-
-    private drawQuadTree( qt : FkQuadTree<GridData> ) {
-        this.layerGridEdge.clear();
-        this.debugDrawCounter = 0;
-        qt.draw();
-        console.log( "Draw: " + this.debugDrawCounter );
-    }
-
-    private drawGrid( _rect : Phaser.Geom.Rectangle, _data : GridData ) : void {
-        if ( _data.dataIsVisible == false ) {
-            if ( this.IS_DEBUG ) {
-                this.debugDrawCounter++;
-                this.layerGridEdge.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR_HIDDEN, 1);
-                this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
-            }
-        }
-        else {
-            this.debugDrawCounter++;
-            this.layerGridEdge.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR, 1);
-            this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
-        }
-    }
 }
