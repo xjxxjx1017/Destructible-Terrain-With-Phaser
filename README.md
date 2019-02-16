@@ -15,15 +15,22 @@ Destroyed blocks are rendered with hollow red frames.
 
 ## Features
 * Support draw/erase with circles, triangles, rectangles, lines
+* Destructable objects class
 * Examples
 
 ## Environment
 * Phaser 3, Typescript, Lodash, Webpack
 
-## TaskList
-* Draw/erase with another Destr Object
+## Task List
+1. Draw/erase with another Destr Object
 
-* Collision check with point, line
-* Collision check with destructible object?
+2. Destructible object collision check with a point. Returns whether the point is inside the object.
+3. Destructible object collision check with a line or a moving point. Returns the point where the first contact happened.
+4. Destructible object collision check with another moving destructible object? Returns 2 points where the destructible object first reached each other.
 
-* Desctructable Object save/load
+5. Update example with drawing using pretty textures. Using phaser.graphics only for debugging.
+
+6. Desctructable Object save/load (serialization)
+
+## Pending Task List (implement on high demand only)
+* Moving estructible objet colision with a static line
