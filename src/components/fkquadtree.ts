@@ -84,6 +84,20 @@ export class FkQuadTree<T>{
 		}
 	}
 
+	public updateWithQuadTree( _g : FkQuadTree<T>, _updateDataFunc: ( _data : T ) => T ) {
+		if ( _g.dataSubTree == null ) {
+			var data = _updateDataFunc( _g.dataNode );
+			if ( data != null )
+				this.updateWithRectangle( _g.dataRect, data );
+		}
+		else {
+			for( var i = 0; i < _g.dataSubTree.length; i++ ) {
+				var t = _g.dataSubTree[i];
+				this.updateWithQuadTree( t, _updateDataFunc );
+			}
+		}
+	}
+
 	private updateSubtrees( _dataToUpdate : T, 
 		_callback : ( _tree : FkQuadTree<T>, _data : T ) => void ) {
 		if ( this.resDepth > 0 ) {

@@ -1,4 +1,5 @@
 import "phaser";
+import * as _ from 'lodash';
 import { FkQuadTree } from "./fkquadtree";
 
 class FkDstGridData {
@@ -38,6 +39,15 @@ export class FkDestructibleObject {
 			( _rect, _data ) => { self.drawGrid( _rect, _data ); }, new FkDstGridData(true) );
 	}
 
+	public damageByDstObject( _g : FkDestructibleObject ) {
+		this.dataBody.updateWithQuadTree( _g.dataBody, ( _data : FkDstGridData ) => {
+			if ( _.isEqual( _data, new FkDstGridData( true ) ) )
+				return new FkDstGridData(false);
+			else
+				return null;
+		} );
+	}
+
 	public damageByCircle( _g : Phaser.Geom.Circle ) { 
 		this.dataBody.updateWithCircle( _g, new FkDstGridData(false) );
 	}
@@ -53,6 +63,15 @@ export class FkDestructibleObject {
 	public damageByLine( _x1 : number, _y1 : number, 
 		_x2 : number, _y2 : number, _w : number ) {
 		this.dataBody.updateWithLine( _x1, _y1, _x2, _y2, _w, new FkDstGridData(false) );
+	}
+
+	public generateByDstObject( _g : FkDestructibleObject ) {
+		this.dataBody.updateWithQuadTree( _g.dataBody, ( _data : FkDstGridData ) => {
+			if ( _.isEqual( _data, new FkDstGridData( true ) ) )
+				return new FkDstGridData(true);
+			else
+				return null;
+		} );
 	}
 
 	public generateByCircle( _g : Phaser.Geom.Circle ) { 

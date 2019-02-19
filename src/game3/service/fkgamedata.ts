@@ -43,13 +43,14 @@ export class FkGameData {
         var ship3 = new FkDestructibleObject( this.dataGame, 5 * s, 45 * s, 50 * s, 30 * s );
         ship3.damageByCircle( new Phaser.Geom.Circle( 15 * s, 15 * s, 4 * s ) );
         ship3.damageByCircle( new Phaser.Geom.Circle( 15 * s, 22 * s, 6 * s ) );
+        ship3.damageByLine( 40 * s, 25 * s, 10 * s, 35 * s, 1 * s );
+        ship3.damageByLine( 10 * s, 20 * s, 40 * s, 20 * s, 1 * s );
         ship3.drawDstObject();
 
         var ship4 = new FkDestructibleObject( this.dataGame, 65 * s, 45 * s, 40 * s, 40 * s );
-        ship4.damageByCircle( new Phaser.Geom.Circle( 15 * s, 15 * s, 4 * s ) );
-        ship4.damageByCircle( new Phaser.Geom.Circle( 15 * s, 22 * s, 6 * s ) );
-        ship4.damageByLine( 40 * s, 25 * s, 10 * s, 35 * s, 1 * s );
-        ship4.damageByLine( 10 * s, 20 * s, 40 * s, 20 * s, 1 * s );
+        ship4.damageByDstObject( ship2 );
+        ship4.damageByDstObject( ship3 );
+        ship4.generateByDstObject( ship1 );
         ship4.drawDstObject();
 	}
 }
