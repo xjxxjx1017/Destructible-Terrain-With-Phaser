@@ -1,5 +1,5 @@
 import 'phaser';
-import {FkGameData} from './service/fkgamedata';
+import {SampleGameData} from './service/samplegamedata';
 
 export class Core extends Phaser.Scene {
 
@@ -11,7 +11,7 @@ export class Core extends Phaser.Scene {
     
 	public create(): void {
 		var g = this;
-		FkGameData.inst().Init( g );
-		FkGameData.inst().Run();
+		SampleGameData.inst().Init( g );
+		SampleGameData.inst().Run();
 	}
 }

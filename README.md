@@ -15,7 +15,7 @@ Destroyed blocks are rendered with hollow red frames.
 
 ## Features
 * Support draw/erase with circles, triangles, rectangles, lines
-* Destructible objects class, support draw/erase with another destructible object.
+* Destructible objects base class, allow extends, support draw/erase with another destructible object.
 * Examples
 
 ## Environment

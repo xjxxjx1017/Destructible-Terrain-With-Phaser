@@ -8,15 +8,12 @@ export class FkQuadTree<T>{
 	public dataNode : T;
 	public dataRect : Phaser.Geom.Rectangle;
 	public dataSubTree : FkQuadTree<T>[];
-	public triggerDraw : ( rect : Phaser.Geom.Rectangle, data : T ) => void;
 
-	constructor( _x : number, _y : number, _w : number, _h : number, _depth : number,
-		_draw : ( rect : Phaser.Geom.Rectangle, data : T ) => void, _data : T ) {
+	constructor( _x : number, _y : number, _w : number, _h : number, _depth : number, _data : T ) {
 		this.resDepth = _depth;
 		this.dataNode = _data;
 		this.dataRect = new Phaser.Geom.Rectangle( _x, _y, _w, _h );
 		this.dataSubTree = null;
-		this.triggerDraw = _draw;
 	}
 
 	public updateWithLine( _x1 : number, _y1 : number, 
@@ -116,14 +113,14 @@ export class FkQuadTree<T>{
 		else this.foldSubTreesToParent( _dataToUpdate );
 	}
 
-	public draw() {
+	public draw( _triggerDraw : ( rect : Phaser.Geom.Rectangle, data : T ) => void ) {
 		var self = this;
 		if ( this.dataSubTree != null ) {
 			this.dataSubTree.forEach( function(q) {
-				q.draw();
+				q.draw( _triggerDraw );
 			})
 		}
-		else self.triggerDraw( self.dataRect, self.dataNode );
+		else _triggerDraw( self.dataRect, self.dataNode );
 	}
 
 	private foldSubTreesToParent( _data : T ) {
@@ -145,7 +142,7 @@ export class FkQuadTree<T>{
 				this.dataRect.x + ( this.dataRect.width/2 * o.w ), 
 				this.dataRect.y + ( this.dataRect.height/2 * o.h ), 
 				this.dataRect.width/2, this.dataRect.height/2, 
-				this.resDepth - 1, this.triggerDraw, this.dataNode ) );
+				this.resDepth - 1, this.dataNode ) );
 		}
 	}
 
