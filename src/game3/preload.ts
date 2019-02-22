@@ -9,6 +9,7 @@ export class Preload extends Phaser.Scene {
     }
     
     public preload() : void {
+        this.load.image('ship-body-light', 'assets/ship-body-light.png');
     }
 
     public create(): void {
