@@ -56,20 +56,37 @@ export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
 		this.dataBody.updateWithLine( _x1, _y1, _x2, _y2, _w, _sNew );
 	}
 
-    public collisionWithPoint( _g : Phaser.Geom.Point ) : boolean {
+    public collisionWithPoint( _g : Phaser.Geom.Point, _sData : T ) : boolean {
+    	return this.dataBody.collisionWithPoint( 
+    		new Phaser.Geom.Point( _g.x - this.dataPos.x, _g.y - this.dataPos.y ), _sData );
+    }
+
+    public collisionWithMovingPoint( _g1 : Phaser.Geom.Point, _g2 : Phaser.Geom.Point, _sData : T ) : Phaser.Geom.Point {
+    	return this.dataBody.collisionWithMovingPoint( 
+    		new Phaser.Geom.Point( _g1.x - this.dataPos.x, _g1.y - this.dataPos.y ), 
+    		new Phaser.Geom.Point( _g2.x - this.dataPos.x, _g2.y - this.dataPos.y ), 
+    		_sData );
+    }
+
+    public collisionWithQuadTree( _g : FkQuadTree<T>, _sData : T ) : boolean {
     	return false;
     }
 
-    public collisionWithMovingPoint( _g1 : Phaser.Geom.Point, _g2 : Phaser.Geom.Point ) : Phaser.Geom.Point {
+    public collisionWithMovingQuadTree( _g1 : FkQuadTree<T>, _g2 : FkQuadTree<T>, _sData : T ) : Phaser.Geom.Point[] {
     	return null;
     }
 
-    public collisionWithDstrObject( _g : FkBaseDestructibleObject<T> ) : boolean {
-    	return false;
+    public collisionWithDstrObject( _g : FkBaseDestructibleObject<T>, _sData : T ) : boolean {
+    	return this.dataBody.collisionWithQuadTree( 
+    		new Phaser.Geom.Point( _g.dataPos.x - this.dataPos.x, _g.dataPos.y - this.dataPos.y ),
+    		_g.dataBody, _sData );
     }
 
-    public collisionWithMovingDstrObject( _g1 : FkBaseDestructibleObject<T>, _g2 : FkBaseDestructibleObject<T> ) : Phaser.Geom.Point[] {
-    	return null;
+    public collisionWithMovingDstrObject( _g1 : FkBaseDestructibleObject<T>, _p2 : Phaser.Geom.Point, _sData : T ) : Phaser.Geom.Point[] {
+    	return this.dataBody.collisionWithMovingQuadTree( 
+    		new Phaser.Geom.Point( _g1.dataPos.x - this.dataPos.x, _g1.dataPos.y - this.dataPos.y ),
+    		new Phaser.Geom.Point( _p2.x - this.dataPos.x, _p2.y - this.dataPos.y ),
+    		_g1.dataBody, _sData );
     }
 
     public saveToString() : string {

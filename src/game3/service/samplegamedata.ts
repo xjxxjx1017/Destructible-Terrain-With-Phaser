@@ -54,5 +54,19 @@ export class SampleGameData {
         ship4.modifyByDstrObject( ship3, stateVisible, stateHide );
         ship4.modifyByDstrObject( ship1, stateVisible, stateVisible );
         ship4.drawDstrObject();
+
+        var g = this.dataGame.add.graphics();
+        this.dataGame.input.on( "pointermove", function( pointer ) {
+            var b = 
+                ship1.collisionWithPoint( new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible ) ||
+                ship2.collisionWithPoint( new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible ) ||
+                ship3.collisionWithPoint( new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible ) ||
+                ship4.collisionWithPoint( new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible );
+            g.clear();
+            g.lineStyle( 1, b ? 0x00ff00 : 0xff0000, 1 );
+            g.fillStyle( b ? 0x00ff00 : 0xff0000 );
+            g.fillCircle( pointer.x, pointer.y, 5 );
+            g.strokeCircle( pointer.x, pointer.y, 7 );
+        });
 	}
 }

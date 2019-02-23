@@ -4,10 +4,12 @@ A work in progress.
 
 Current progress - example screenshot:
 
-The below example show 4 destructable objects.
-Terrain blocks are rendered with hollow green frames.
-Destroyed blocks are rendered with hollow red frames.
-![Example](/assets/spec/2019-02-22.21-34-26.png "Example")
+The below example show 4 destructible objects.
+* Terrain blocks are rendered with hollow green frames.
+* Destroyed blocks are rendered with hollow red frames.
+* The bottom left object is constructed by using other destructible objects. Rendered using texture.
+* A double circle pointer, showing a point-collision status with all objects.
+![Example](/assets/spec/2019-02-23.12-42-48.png "Example")
 
 ## Instructions
 1. run npm install
@@ -16,6 +18,7 @@ Destroyed blocks are rendered with hollow red frames.
 ## Features
 * Support draw/erase with circles, triangles, rectangles, lines
 * Destructible objects base class, allow extends, support draw/erase with another destructible object.
+* Support collision check with points.
 * Examples
 
 ## Environment
@@ -23,7 +26,6 @@ Destroyed blocks are rendered with hollow red frames.
 
 ## Task List
 
-2. Destructible object collision check with a point. Returns whether the point is inside the object.
 3. Destructible object collision check with a line or a moving point. Returns the point where the first contact happened.
 
 4. Destructible object collision check with another moving destructible object? Returns 2 points where the destructible object first reached each other.

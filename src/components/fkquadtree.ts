@@ -123,6 +123,32 @@ export class FkQuadTree<T>{
 		else _triggerDraw( self.dataRect, self.dataNode );
 	}
 
+    public collisionWithPoint( _g : Phaser.Geom.Point, _sData : T ) : boolean {
+    	if ( !this.dataRect.contains( _g.x, _g.y ) )
+    		return false;
+    	if ( this.dataSubTree != null ) {
+			var b = false;
+			for ( var i = 0; i < this.dataSubTree.length; i++ ) {
+				b = b || this.dataSubTree[i].collisionWithPoint( _g, _sData );
+			}
+			return b;
+		}
+		else
+			return _.isEqual( this.dataNode, _sData );
+    }
+
+    public collisionWithMovingPoint( _g1 : Phaser.Geom.Point, _g2 : Phaser.Geom.Point, _sData : T ) : Phaser.Geom.Point {
+    	return null;
+    }
+
+    public collisionWithQuadTree( _offset : Phaser.Geom.Point, _g : FkQuadTree<T>, _sData : T ) : boolean {
+    	return false;
+    }
+
+    public collisionWithMovingQuadTree( _offset1 : Phaser.Geom.Point, _offset2 : Phaser.Geom.Point, _g : FkQuadTree<T>, _sData : T ) : Phaser.Geom.Point[] {
+    	return null;
+    }
+
 	private foldSubTreesToParent( _data : T ) {
 		this.dataSubTree = null;
 		this.dataNode = _data;
