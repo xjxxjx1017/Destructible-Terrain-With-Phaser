@@ -9,6 +9,7 @@ The below example show 4 destructible objects.
 * Destroyed blocks are rendered with hollow red frames.
 * The bottom left object is constructed by using other destructible objects. Rendered using texture.
 * A double circle pointer, showing a point-collision status with all objects.
+
 ![Example](/assets/spec/2019-02-23.12-42-48.png "Example")
 
 ## Instructions
