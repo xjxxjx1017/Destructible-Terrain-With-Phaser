@@ -62,18 +62,14 @@ export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
     }
 
     public collisionWithMovingPoint( _g1 : Phaser.Geom.Point, _g2 : Phaser.Geom.Point, _sData : T ) : Phaser.Geom.Point {
-    	return this.dataBody.collisionWithMovingPoint( 
+    	var p = this.dataBody.collisionWithMovingPoint( 
     		new Phaser.Geom.Point( _g1.x - this.dataPos.x, _g1.y - this.dataPos.y ), 
     		new Phaser.Geom.Point( _g2.x - this.dataPos.x, _g2.y - this.dataPos.y ), 
     		_sData );
-    }
-
-    public collisionWithQuadTree( _g : FkQuadTree<T>, _sData : T ) : boolean {
-    	return false;
-    }
-
-    public collisionWithMovingQuadTree( _g1 : FkQuadTree<T>, _g2 : FkQuadTree<T>, _sData : T ) : Phaser.Geom.Point[] {
-    	return null;
+    	if ( p != null )
+    		return new Phaser.Geom.Point( this.dataPos.x + p.x, this.dataPos.y + p.y );
+    	else
+    		return null;
     }
 
     public collisionWithDstrObject( _g : FkBaseDestructibleObject<T>, _sData : T ) : boolean {

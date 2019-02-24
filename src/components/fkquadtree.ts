@@ -138,6 +138,55 @@ export class FkQuadTree<T>{
     }
 
     public collisionWithMovingPoint( _g1 : Phaser.Geom.Point, _g2 : Phaser.Geom.Point, _sData : T ) : Phaser.Geom.Point {
+    	var targetLine = new Phaser.Geom.Line( _g1.x, _g1.y, _g2.x, _g2.y );
+    	// If it doesn't intersect, skip it 
+    	if ( _.isEqual( _sData, this.dataNode ) && !Phaser.Geom.Intersects.LineToRectangle( targetLine, this.dataRect ) )
+    		return null;
+    	var p_min : Phaser.Geom.Point = null;
+    	var len_min : number = Number.MAX_VALUE;
+    	// only if it doesn't have sub tree
+    	if ( this.dataSubTree == null ) {
+    		if ( !_.isEqual( _sData, this.dataNode ) )
+    			return null;
+	    	var lines = [];
+	    	lines.push( this.dataRect.getLineA() );
+	    	lines.push( this.dataRect.getLineB() );
+	    	lines.push( this.dataRect.getLineC() );
+	    	lines.push( this.dataRect.getLineD() );
+	    	for( var i = 0; i < lines.length; i++ ) {
+	    		var l = lines[i];
+	    		var tmpP = new Phaser.Geom.Point( 0, 0 );
+		    	var b = Phaser.Geom.Intersects.LineToLine( 
+		    		targetLine, l, tmpP );
+		    	if ( b ) {
+		    		// get min length, if it's smaller than current min, then save the point and the min value
+		    		var len = ( tmpP.x - _g1.x ) * ( tmpP.x - _g1.x )
+		    			+ ( tmpP.y - _g1.y ) * ( tmpP.y - _g1.y );
+		    		if ( len < len_min ) {
+		    			len_min = len;
+		    			p_min = tmpP;
+		    		}
+		    	}
+	    	}
+	    	return p_min;
+    	}
+    	else {
+    		for ( var j = 0; j < this.dataSubTree.length; j++ ) {
+    			var st = this.dataSubTree[j];
+    			var tmpP = st.collisionWithMovingPoint( _g1, _g2, _sData );
+    			if ( tmpP != null ) {
+		    		// get min length, if it's smaller than current min, then save the point and the min value
+		    		var len = ( tmpP.x - _g1.x ) * ( tmpP.x - _g1.x )
+		    			+ ( tmpP.y - _g1.y ) * ( tmpP.y - _g1.y );
+		    		if ( len < len_min ) {
+		    			len_min = len;
+		    			p_min = tmpP;
+		    		}
+    			}
+    		}
+	    	return p_min;
+    	}
+    	// If it has sub tree for all collision points find the closest one in the sub tree.
     	return null;
     }
 

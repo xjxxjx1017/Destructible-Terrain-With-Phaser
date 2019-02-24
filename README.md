@@ -19,15 +19,13 @@ The below example show 4 destructible objects.
 ## Features
 * Support draw/erase with circles, triangles, rectangles, lines
 * Destructible objects base class, allow extends, support draw/erase with another destructible object.
-* Support collision check with points.
+* Support collision check with static or moving points, lines.
 * Examples
 
 ## Environment
 * Phaser 3, Typescript, Lodash, Webpack
 
 ## Task List
-
-3. Destructible object collision check with a line or a moving point. Returns the point where the first contact happened.
 
 4. Destructible object collision check with another moving destructible object? Returns 2 points where the destructible object first reached each other.
 

@@ -56,17 +56,55 @@ export class SampleGameData {
         ship4.drawDstrObject();
 
         var g = this.dataGame.add.graphics();
+        var shipList : FkDestructibleObject[] = [];
+        shipList.push( ship1 );
+        shipList.push( ship2 );
+        shipList.push( ship3 );
+        shipList.push( ship4 );
         this.dataGame.input.on( "pointermove", function( pointer ) {
-            var b = 
-                ship1.collisionWithPoint( new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible ) ||
-                ship2.collisionWithPoint( new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible ) ||
-                ship3.collisionWithPoint( new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible ) ||
-                ship4.collisionWithPoint( new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible );
+            var b = false;
+            shipList.forEach( function(ship) {
+                b = b || ship.collisionWithPoint( new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible )
+            });
+            var lineStartPointList = [];
+            lineStartPointList.push( new Phaser.Geom.Point( 100, 100 ) );
+            lineStartPointList.push( new Phaser.Geom.Point( 450, 100 ) );
+            lineStartPointList.push( new Phaser.Geom.Point( 100, 350 ) );
+            lineStartPointList.push( new Phaser.Geom.Point( 450, 330 ) );
+            lineStartPointList.push( new Phaser.Geom.Point( 100, 220 ) );
             g.clear();
-            g.lineStyle( 1, b ? 0x00ff00 : 0xff0000, 1 );
-            g.fillStyle( b ? 0x00ff00 : 0xff0000 );
-            g.fillCircle( pointer.x, pointer.y, 5 );
-            g.strokeCircle( pointer.x, pointer.y, 7 );
+            for ( var i = 0; i < lineStartPointList.length; i++ ) {
+                var min_len = Number.MAX_VALUE;
+                var p = lineStartPointList[i];
+                self.drawDebugCircleSmall( g, p.x, p.y, true );
+                var collidePoint = FkDestructibleObject.firstCollidePointForMovingPointToDstrObjectList( shipList, p, new Phaser.Geom.Point( pointer.x, pointer.y ), stateVisible );
+                if ( collidePoint != null ) {
+                    self.drawDebugLine( g, new Phaser.Geom.Line( p.x, p.y, pointer.x, pointer.y ), false );
+                    self.drawDebugCircle( g, collidePoint.x, collidePoint.y, true );
+                    self.drawDebugLine( g, new Phaser.Geom.Line( p.x, p.y, collidePoint.x, collidePoint.y ), true );
+                }
+                else
+                    self.drawDebugLine( g, new Phaser.Geom.Line( p.x, p.y, pointer.x, pointer.y ), true );
+            }
+            // draw mouse position
+            self.drawDebugCircleSmall( g, pointer.x, pointer.y, true );
         });
 	}
+
+    private drawDebugCircle( _graphics : Phaser.GameObjects.Graphics, _x : number, _y : number, isTrue : boolean ) {
+        _graphics.lineStyle( 1, isTrue ? 0xffff00 : 0xff0000, 1 );
+        _graphics.fillStyle( isTrue ? 0xffff00 : 0xff0000 );
+        _graphics.fillCircle( _x, _y, 5 );
+        _graphics.strokeCircle( _x, _y, 7 );
+    }
+
+    private drawDebugCircleSmall( _graphics : Phaser.GameObjects.Graphics, _x : number, _y : number, isTrue : boolean ) {
+        _graphics.fillStyle( isTrue ? 0xffff00 : 0xff0000 );
+        _graphics.fillCircle( _x, _y, 3 );
+    }
+
+    private drawDebugLine( _graphics : Phaser.GameObjects.Graphics, _l : Phaser.Geom.Line, isTrue : boolean ) {
+        _graphics.lineStyle( 1, isTrue ? 0x00ff00 : 0xff0000, 3 );
+        _graphics.strokeLineShape( _l );
+    }
 }
