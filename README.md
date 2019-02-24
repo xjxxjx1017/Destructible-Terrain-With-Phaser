@@ -8,7 +8,7 @@ The below example show 4 destructible objects.
 * Terrain blocks are rendered with hollow green frames.
 * Destroyed blocks are rendered with hollow red frames.
 * The bottom right object is constructed by using other destructible objects. Rendering by textures.
-* Yellow double circles, showing ray-to-mouse position collision statuses with all objects.
+* Yellow double circles, showing ray-to-mouse-position collision statuses with all objects.
 
 ![Example](/assets/spec/2019-02-24.20-07-26.png "Example")
 
