@@ -26,7 +26,7 @@ export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
 			_initState );
 	}
 
-	public draw( _triggerDraw : ( rect : Phaser.Geom.Rectangle, data : T ) => void ) {
+	protected draw( _triggerDraw : ( rect : Phaser.Geom.Rectangle, data : T ) => void ) {
 		this.dataBody.draw( _triggerDraw );
 	}
 
@@ -39,21 +39,41 @@ export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
 		} );
 	}
 
-	public modifyByCircle( _g : Phaser.Geom.Circle, _sNew : T ) { 
-		this.dataBody.updateWithCircle( _g, _sNew );
+	public modifyByCircle( _g : Phaser.Geom.Circle, _sNew : T, _isRelative : boolean = false ) {
+		if ( _isRelative )
+			this.dataBody.updateWithCircle( _g, _sNew );
+		else
+			this.dataBody.updateWithCircle( 
+				new Phaser.Geom.Circle( _g.x - this.dataPos.x, _g.y - this.dataPos.y, 
+					_g.radius ), _sNew );
 	}
 
-	public modifyByRectangle( _g : Phaser.Geom.Rectangle, _sNew : T ) { 
-		this.dataBody.updateWithRectangle( _g, _sNew );
+	public modifyByRectangle( _g : Phaser.Geom.Rectangle, _sNew : T, _isRelative : boolean = false ) { 
+		if ( _isRelative )
+			this.dataBody.updateWithRectangle( _g, _sNew );
+		else
+			this.dataBody.updateWithRectangle( 
+				new Phaser.Geom.Rectangle( _g.x - this.dataPos.x, _g.y - this.dataPos.y, 
+					_g.width, _g.height ), _sNew );
 	}
 
-	public modifyByTriangle( _g : Phaser.Geom.Triangle, _sNew : T ) { 
-		this.dataBody.updateWithTriangle( _g, _sNew );
+	public modifyByTriangle( _g : Phaser.Geom.Triangle, _sNew : T, _isRelative : boolean = false ) { 
+		if ( _isRelative )
+			this.dataBody.updateWithTriangle( _g, _sNew );
+		else
+			this.dataBody.updateWithTriangle( 
+				new Phaser.Geom.Triangle( _g.x1 - this.dataPos.x, _g.y1 - this.dataPos.y,
+				 	_g.x2 - this.dataPos.x, _g.y2 - this.dataPos.y,
+				 	_g.x3 - this.dataPos.x, _g.y3 - this.dataPos.y ), _sNew );
 	}
 
 	public modifyByLine( _x1 : number, _y1 : number, 
-		_x2 : number, _y2 : number, _w : number, _sNew : T ) {
-		this.dataBody.updateWithLine( _x1, _y1, _x2, _y2, _w, _sNew );
+		_x2 : number, _y2 : number, _w : number, _sNew : T, _isRelative : boolean = false ) {
+		if ( _isRelative )
+			this.dataBody.updateWithLine( _x1, _y1, _x2, _y2, _w, _sNew );
+		else
+			this.dataBody.updateWithLine( _x1 - this.dataPos.x, _y1 - this.dataPos.y, 
+				_x2 - this.dataPos.x, _y2 - this.dataPos.y, _w, _sNew );
 	}
 
     public collisionWithPoint( _g : Phaser.Geom.Point, _sData : T ) : boolean {

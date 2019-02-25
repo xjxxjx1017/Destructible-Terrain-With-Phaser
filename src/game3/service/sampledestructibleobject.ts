@@ -6,43 +6,41 @@ export class FkDstrGridData extends FkBaseDstrGridData {
     public dataIsVisible : boolean;
 
     protected constructor( _isVisible : boolean ) {
-    	super();
+        super();
         this.dataIsVisible = _isVisible;
     }
 
     public static getStateVisible() : FkDstrGridData {
-    	return new FkDstrGridData( true );
+        return new FkDstrGridData( true );
     }
 
     public static getStateHide() : FkDstrGridData {
-    	return new FkDstrGridData( false );
+        return new FkDstrGridData( false );
     }
 }
 
 export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridData> {
     private IS_DEBUG : boolean = true;
-    public static RENDER_FRAME : string = "RENDER_FRAME";
-    public static RENDER_TEXTURE : string = "RENDER_TEXTURE";
     private FRAME_COLOR : number = 0x00ff00;
     private FRAME_FILL_COLOR : number = 0x004400;
     private FRAME_COLOR_HIDDEN : number = 0xff0000;
     private FRAME_WIDTH : number = 1;   
-    private dataRenderType : string = FkDestructibleObject.RENDER_FRAME; 
+    private dataRenderTexture : string = null; 
     private layerGridEdge : Phaser.GameObjects.Graphics;
     private layerTexture : Phaser.GameObjects.Image;
     private debugDrawCounter : number = 0;
 
-	constructor( _game: Phaser.Scene, _posX : number, _posY : number, 
-		_maxWidth : number, _maxHeight : number, _renderType : string ) {
-    	super( _game, _posX, _posY, _maxWidth, _maxHeight,
-	    	( _rect, _data ) => { this.render( _rect, _data ); }, 
-	    	FkDstrGridData.getStateVisible()  );
-        this.dataRenderType = _renderType;
-        if ( this.dataRenderType == FkDestructibleObject.RENDER_TEXTURE ) {
+    constructor( _game: Phaser.Scene, _posX : number, _posY : number, 
+        _maxWidth : number, _maxHeight : number, _renderTexture : string = null ) {
+        super( _game, _posX, _posY, _maxWidth, _maxHeight,
+            ( _rect, _data ) => { this.render( _rect, _data ); }, 
+            FkDstrGridData.getStateVisible()  );
+        this.dataRenderTexture = _renderTexture;
+        if ( this.dataRenderTexture != null ) {
             this.layerGridEdge = _game.make.graphics( {} );
             this.layerGridEdge.setX( _posX );
             this.layerGridEdge.setY( _posY );
-            this.layerTexture = _game.add.image( _posX, _posY, "ship-body-light" );
+            this.layerTexture = _game.add.image( _posX, _posY, this.dataRenderTexture );
             this.layerTexture.setMask( this.layerGridEdge.createGeometryMask() );
         }
         else {
@@ -50,7 +48,7 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
             this.layerGridEdge.setX( _posX );
             this.layerGridEdge.setY( _posY );
         }
-	}
+    }
 
     public drawDstrObject() {
         this.layerGridEdge.clear();
@@ -60,7 +58,7 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     }
 
     private render(  _rect : Phaser.Geom.Rectangle, _data : FkDstrGridData ) {
-        if ( this.dataRenderType == FkDestructibleObject.RENDER_TEXTURE ) {
+        if ( this.dataRenderTexture != null ) {
             this.renderTexture( _rect, _data );
             return;
         }
