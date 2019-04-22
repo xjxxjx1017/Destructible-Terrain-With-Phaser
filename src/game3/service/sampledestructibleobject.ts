@@ -29,12 +29,14 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     private layerGridEdge : Phaser.GameObjects.Graphics;
     private layerTexture : Phaser.GameObjects.Image;
     private debugDrawCounter : number = 0;
+    public dataRect : Phaser.Geom.Rectangle = null;
 
     constructor( _game: Phaser.Scene, _posX : number, _posY : number, 
         _maxWidth : number, _maxHeight : number, _renderTexture : string = null ) {
         super( _game, _posX, _posY, _maxWidth, _maxHeight,
             ( _rect, _data ) => { this.render( _rect, _data ); }, 
             FkDstrGridData.getStateVisible()  );
+        this.dataRect = new Phaser.Geom.Rectangle( _posX, _posY, _maxWidth, _maxHeight );
         this.dataRenderTexture = _renderTexture;
         if ( this.dataRenderTexture != null ) {
             this.layerGridEdge = _game.make.graphics( {} );

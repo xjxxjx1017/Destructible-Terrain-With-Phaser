@@ -10,7 +10,7 @@ The below example show 4 destructible objects.
 * The bottom right object is constructed by using other destructible objects. Rendering by textures.
 * Yellow double circles, showing ray-to-mouse-position collision statuses with all objects.
 
-![Example](/assets/spec/2019-02-24.20-07-26.png "Example")
+![Example](/assets/spec/2019-04-22.18-10-27.png "Example")
 
 ## Instructions
 1. run npm install
@@ -20,6 +20,7 @@ The below example show 4 destructible objects.
 * Support draw/erase with circles, triangles, rectangles, lines
 * Destructible objects base class, allow extends, support draw/erase with another destructible object.
 * Support collision check with static or moving points, lines.
+* Calculation for area
 * Examples
 
 ## Environment

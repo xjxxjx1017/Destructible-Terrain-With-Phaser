@@ -61,6 +61,12 @@ export class SampleGameData {
         shipList.push( ship2 );
         shipList.push( ship3 );
         shipList.push( ship4 );
+        shipList.forEach( function(ship: FkDestructibleObject) {
+            self.dataGame.add.text( ship.dataRect.x - 10, ship.dataRect.y, 
+                "" + Math.floor( ship.area( function(data1 : FkDstrGridData) : boolean { 
+                    return data1.dataIsVisible;
+                }) * 100 ) + "%" );
+        })
         this.dataGame.input.on( "pointermove", function( pointer ) {
             var b = false;
             shipList.forEach( function(ship) {

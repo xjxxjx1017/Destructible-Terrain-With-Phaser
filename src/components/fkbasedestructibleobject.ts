@@ -30,6 +30,10 @@ export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
 		this.dataBody.draw( _triggerDraw );
 	}
 
+	public area( _matchFunc : (_data1:T)=>boolean ) : number {
+		return this.dataBody.area( 1, _matchFunc );
+	}
+
 	public modifyByDstrObject( _g : FkBaseDestructibleObject<T>, _stateToChangeFromSource : T, _stateNewOnTarget : T ) {
 		this.dataBody.updateWithQuadTree( _g.dataBody, ( _data : T ) => {
 			if ( _.isEqual( _data, _stateToChangeFromSource ) )

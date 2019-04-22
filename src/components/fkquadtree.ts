@@ -16,6 +16,21 @@ export class FkQuadTree<T>{
 		this.dataSubTree = null;
 	}
 
+	public area( _fraction : number, _matchFunc : (_data1:T)=>boolean ) : number {
+		if ( _matchFunc == null )
+			return 0;
+		if ( this.dataSubTree == null )
+			return _matchFunc(this.dataNode) ? _fraction : 0;
+		else {
+			var sum : number = 0;
+			for( var i = 0; i < this.dataSubTree.length; i++ ) {
+				var t = this.dataSubTree[i];
+				sum += t.area( _fraction * 0.25, _matchFunc );
+			}
+			return sum;
+		}
+	}
+
 	public updateWithLine( _x1 : number, _y1 : number, 
 		_x2 : number, _y2 : number, _w : number, _dataChangeOnContain : T ) {
 		var theta = Math.atan( ( _y2 - _y1 ) / ( _x2 - _x1 ) );
