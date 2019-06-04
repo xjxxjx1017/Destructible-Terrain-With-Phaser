@@ -30,8 +30,9 @@ The below example show 4 destructible objects.
 
 4. Destructible object collision check with another moving destructible object? Returns 2 points where the destructible object first reached each other.
 
-6. Desctructable Object save/load (serialization) ( already done in /spacewarrealism
- repo, wait for pulling )
+6. Desctructable Object save/load (serialization) ( already done in /spacewarrealism repo, wait for pulling )
+ 
+7. Place each destructible object in a Phaser Container, so that it is controllable as a single object. May need to deal with point transformations.
 
 ## Pending Task List (implement on high demand only)
 * Moving destructible objet colision with a static line
