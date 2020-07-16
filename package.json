@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/xjxxjx1017/Destructable-Terrain-With-Phaser#readme",
   "dependencies": {
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "phaser": "^3.16.2"
   },
   "devDependencies": {
